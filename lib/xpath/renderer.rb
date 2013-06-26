@@ -131,6 +131,11 @@ module XPath
       "starts-with(#{current}, #{value})"
     end
 
+    def ends_with(current, value)
+      start_at = "#{string_length_function(current)} - #{string_length_function(string_function(value))} + 1"
+      equality(string_function(value), substring_function(current, start_at))
+    end
+
     def and(one, two)
       "(#{one} and #{two})"
     end
@@ -173,6 +178,10 @@ module XPath
 
     def substring_function(current, *arguments)
       "substring(#{current}, #{arguments.join(", ")})"
+    end
+
+    def string_length_function(current)
+      "string-length(#{current})"
     end
   end
 end

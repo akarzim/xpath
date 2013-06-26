@@ -181,6 +181,26 @@ describe XPath do
     end
   end
 
+  describe '#ends_with' do
+    it "should find nodes that finish with the given string" do
+      @results = xpath do |x|
+        x.descendant(:*).where(x.attr(:id).ends_with('foo'))
+      end
+      @results.size.should == 2
+      @results[0][:id].should == "foo"
+      @results[1][:id].should == "barfoo"
+    end
+
+    it "should find nodes that contain the given expression" do
+      @results = xpath do |x|
+        expression = x.anywhere(:div).where(x.attr(:title) == 'fooDiv').attr(:id)
+        x.descendant(:div).where(x.attr(:title).ends_with(expression))
+      end
+      @results.size.should == 1
+      @results[0][:id].should == "barfoo"
+    end
+  end
+
   describe '#text' do
     it "should select a node's text" do
       @results = xpath { |x| x.descendant(:p).where(x.text == 'Bax') }
@@ -204,6 +224,13 @@ describe XPath do
         @results = xpath { |x| x.descendant(:span).where(x.attr(:id) == "substring").text.substring(2, 4) }
         @results.should == "ello"
       end
+    end
+  end
+
+  describe '#string_length' do
+    it "should return the length of a string" do
+      @results = xpath { |x| x.descendant(:span).where(x.attr(:id) == "string-length").text.string_length }
+      @results.should == 11
     end
   end
 

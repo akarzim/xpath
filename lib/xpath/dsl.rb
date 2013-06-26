@@ -49,6 +49,10 @@ module XPath
         Expression.new(:starts_with, current, expression)
       end
 
+      def ends_with(expression)
+        Expression.new(:ends_with, current, expression)
+      end
+
       def text
         Expression.new(:text, current)
       end
@@ -61,6 +65,10 @@ module XPath
         expressions = [expression1]
         expressions << expression2 unless expression2.nil?
         Expression.new(:substring_function, current, *expressions)
+      end
+
+      def string_length
+        Expression.new(:string_length_function, current)
       end
 
       def css(selector)
